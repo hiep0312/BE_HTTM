@@ -23,8 +23,8 @@ public class SampleController {
     }
 
     @PostMapping("/addsample")
-    public ResponseEntity<?> addSample(@RequestParam("audioId") int audioId, @RequestParam("transcriptId") int transcriptId) {
-        return sampleDao.addSample(new Sample(audioId, transcriptId));
+    public ResponseEntity<?> addSample(@RequestParam String name, @RequestParam int audioId, @RequestParam int transcriptId) {
+        return sampleDao.addSample(new Sample(name, audioId, transcriptId));
     }
 
     @PostMapping("/editsample{id}{audioId}{transcriptId}")

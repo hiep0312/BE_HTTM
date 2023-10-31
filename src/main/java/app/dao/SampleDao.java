@@ -13,7 +13,7 @@ import app.model.Sample;
 public class SampleDao {
 
     private static final String GET_SAMPLE = "SELECT * FROM sample LIMIT ? OFFSET ?";
-    private static final String ADD_SAMPLE = "INSERT INTO sample (audioId, transcriptId) VALUES (?, ?)";
+    private static final String ADD_SAMPLE = "INSERT INTO sample (name, audioId, transcriptId) VALUES (?, ?, ?)";
     private static final String DELETE_SAMPLE = "DELETE FROM sample WHERE id = ?";
     private static final String UPDATE_SAMPLE = "UPDATE sample SET audioId = ?, transcriptId = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
 
@@ -41,6 +41,7 @@ public class SampleDao {
             while (rs.next()) {
                 samples.add(new Sample(
                     rs.getInt("id"),
+                    rs.getString("name"),
                     rs.getInt("audioId"),
                     rs.getInt("transcriptId"),
                     rs.getTimestamp("date"),
@@ -62,8 +63,9 @@ public class SampleDao {
         try (Connection conn = MySql.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(ADD_SAMPLE);
 
-            ps.setInt(1, sample.getAudioId());
-            ps.setInt(2, sample.getTranscriptId());
+            ps.setString(1, sample.getName());
+            ps.setInt(2, sample.getAudioId());
+            ps.setInt(3, sample.getTranscriptId());
 
             ps.executeUpdate();
             

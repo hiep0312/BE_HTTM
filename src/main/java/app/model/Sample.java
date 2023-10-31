@@ -4,10 +4,20 @@ import java.sql.Timestamp;
 
 public class Sample {
     private int id;
+    private String name;
     private int audioId;
     private int transcriptId;
     private Timestamp date;
     private Timestamp update;
+
+    public Sample(int id, String name, int audioId, int transcriptId, Timestamp date, Timestamp update) {
+        this.id = id;
+        this.name = name;
+        this.audioId = audioId;
+        this.transcriptId = transcriptId;
+        this.date = date;
+        this.update = update;
+    }
 
     public Sample() {
     }
@@ -25,11 +35,12 @@ public class Sample {
         this.transcriptId = transcriptId;
     }
 
-    public Sample(int id, int audioId, int transcriptId) {
-        this.id = id;
+    public Sample(String name, int audioId, int transcriptId) {
+        this.name = name;
         this.audioId = audioId;
         this.transcriptId = transcriptId;
     }
+
 
     public int getId() {
         return id;
@@ -37,6 +48,14 @@ public class Sample {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAudioId() {
