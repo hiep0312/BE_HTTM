@@ -18,8 +18,8 @@ import app.model.Audio;
 import app.util.FileCopier;
 
 public class AudioDao {
-    // public static String parent_folder = "D:/SourceCode/tts/BE/";
-    public static String parent_folder = "D:\\SourceCode\\Java\\tts\\BE\\Audios\\";
+    // public static String parent_folder = "D:/SourceCode/tts/BE/";"D:\\SourceCode\\Java\\tts\\BE\\Audios\\"
+    public static String parent_folder;
 
     private static final String GET_COUNT_AUDIOS = "SELECT COUNT(*) as total FROM audio";
     private static final String GET_AUDIO_BY_ID = "SELECT * FROM audio WHERE id = ?";
@@ -29,6 +29,10 @@ public class AudioDao {
     private static final String UPDATE_AUDIO = "UPDATE audio SET name = ?, path = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
     private static final String GET_AUDIO_BY_NAME = "SELECT * FROM audio WHERE name = ?";
     
+    public AudioDao() {
+        parent_folder = System.getProperty("user.dir") + "\\Audios\\";
+    }
+
 
     public List<Audio> getAudios(int start_idx, int cnt) {
         List<Audio> audios = new ArrayList<Audio>();

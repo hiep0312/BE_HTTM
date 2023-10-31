@@ -18,10 +18,10 @@ import app.model.Transcript;
 public class TranscriptController {
     TranscriptDao transcriptDao = new TranscriptDao();
 
-    @GetMapping("/transcripts")
-    public List<Transcript> getTranscripts(@RequestParam("start_idx") int start_idx, @RequestParam("count") int count) {
-        return transcriptDao.getTranscript(start_idx, count);
-    }
+    // @GetMapping("/transcripts")
+    // public List<Transcript> getTranscripts(@RequestParam("start_idx") int start_idx, @RequestParam("count") int count) {
+    //     return transcriptDao.getTranscript(start_idx, count);
+    // }
 
     @PostMapping("/addtranscript{name}{content}")
     public ResponseEntity<?> addTranscript(String name, String content) {
@@ -46,5 +46,10 @@ public class TranscriptController {
     @GetMapping("/transcript{id}")
     public ResponseEntity<?> getTranscriptById(int id) {
         return transcriptDao.getTranscriptById(id);
+    }
+
+    @GetMapping("/transcripts")
+    public List<Transcript> getTranscripts(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "true") boolean ascend) {
+        return transcriptDao.getTranscript(start_idx, count, sortBy, ascend);
     }
 }

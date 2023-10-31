@@ -15,6 +15,7 @@ import app.model.Transcript;
 public class TranscriptDao {
     private static final String GET_COUNT_TRANSCRIPT = "SELECT COUNT(*) as total FROM transcript";
     private static final String GET_TRANSCRIPT = "SELECT * FROM transcript LIMIT ? OFFSET ?";
+    private static final String GET_TRANSCRIPT_NEW = "SELECT * FROM transcript Order by ? ? LIMIT ? OFFSET ?";
     private static final String ADD_TRANSCRIPT = "INSERT INTO transcript (name, content) VALUES (?, ?)";
     private static final String UPDATE_TRANSCRIPT = "UPDATE transcript SET content = ?, name = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
     private static final String DELETE_TRANSCRIPT = "DELETE FROM transcript WHERE id = ?";
@@ -65,6 +66,59 @@ public class TranscriptDao {
         }
         
         return transcripts;
+    }
+    
+
+    public List<Transcript> getTranscript(int startIdx, int cnt, String sortBy, boolean ascend) {
+        List<Transcript> transcripts = new ArrayList<Transcript>();
+
+        try (Connection conn = MySql.getConnection()) {
+
+
+            PreparedStatement ps = conn.prepareStatement(GET_COUNT_TRANSCRIPT);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            int total = rs.getInt("total");
+           
+            if (startIdx >= total) {
+                System.out.println("No transcript");
+                return transcripts;
+            }
+
+            int fixed_cnt = Math.min(cnt, total - startIdx);
+           
+            ps = conn.prepareStatement(getTranscriptQuery(startIdx, fixed_cnt, sortBy, ascend));
+            // ps.setString(1, sortBy);
+            // ps.setString(2, ascend ? "asc" : "desc");
+            // ps.setInt(3, fixed_cnt);
+            // ps.setInt(4, startIdx);
+            System.out.println(ps.toString());
+            
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                transcripts.add(new Transcript(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("content"),
+                    rs.getTimestamp("date"),
+                    rs.getTimestamp("lastupdate")
+                ));
+            } 
+            ps.close();
+            rs.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return transcripts;
+    }
+
+    private String getTranscriptQuery(int startIdx, int cnt, String sortBy, boolean ascend) {
+        return "SELECT * FROM transcript Order by " + sortBy + (ascend ? " asc" : " desc") + " LIMIT " + cnt + " OFFSET " + startIdx;
     }
 
 
