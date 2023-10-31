@@ -8,7 +8,7 @@ public class Sample {
     private int audioId;
     private int transcriptId;
     private Timestamp date;
-    private Timestamp update;
+    private Timestamp lastupdate;
 
     public Sample(int id, String name, int audioId, int transcriptId, Timestamp date, Timestamp update) {
         this.id = id;
@@ -16,7 +16,7 @@ public class Sample {
         this.audioId = audioId;
         this.transcriptId = transcriptId;
         this.date = date;
-        this.update = update;
+        this.lastupdate = update;
     }
 
     public Sample() {
@@ -27,7 +27,7 @@ public class Sample {
         this.audioId = audioId;
         this.transcriptId = transcriptId;
         this.date = date;
-        this.update = update;
+        this.lastupdate = update;
     }
 
     public Sample(int audioId, int transcriptId) {
@@ -82,12 +82,12 @@ public class Sample {
         this.date = date;
     }
 
-    public Timestamp getUpdate() {
-        return update;
+    public Timestamp getLastupdate() {
+        return lastupdate;
     }
 
-    public void setUpdate(Timestamp update) {
-        this.update = update;
+    public void setUpdate(Timestamp lastupdate) {
+        this.lastupdate = lastupdate;
     }
 
 }

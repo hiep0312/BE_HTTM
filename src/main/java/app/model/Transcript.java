@@ -7,7 +7,7 @@ public class Transcript {
     private String name;
     private String content;
     private Timestamp date;
-    private Timestamp update;
+    private Timestamp lastupdate;
 
     public Transcript() {
     }
@@ -17,14 +17,14 @@ public class Transcript {
         this.name = name;
         this.content = content;
         this.date = date;
-        this.update = lastUpdate;
+        this.lastupdate = lastUpdate;
     }
 
     public Transcript(String name, String content, Timestamp date, Timestamp lastUpdate) {
         this.name = name;
         this.content = content;
         this.date = date;
-        this.update = lastUpdate;
+        this.lastupdate = lastUpdate;
     }
 
     public Transcript(String name, String content) {
@@ -64,18 +64,18 @@ public class Transcript {
         this.date = date;
     }
 
-    public Timestamp getUpdate() {
-        return update;
+    public Timestamp getLastupdate() {
+        return lastupdate;
     }
 
-    public void setUpdate(Timestamp lastUpdate) {
-        this.update = lastUpdate;
+    public void setLastupdate(Timestamp lastUpdate) {
+        this.lastupdate = lastUpdate;
     }
 
     @Override
     public String toString() {
         return "Transcript [id=" + id + ", name=" + name + ", content=" + content + ", date=" + date + ", lastUpdate="
-                + update + "]";
+                + lastupdate + "]";
     }
 
     

@@ -7,17 +7,17 @@ public class Audio {
     private String name;
     private String path;
     private Timestamp date;
-    private Timestamp update;
+    private Timestamp lastupdate;
 
     public Audio() { 
     }
 
-    public Audio(int id, String name, String path, Timestamp date, Timestamp update) {
+    public Audio(int id, String name, String path, Timestamp date, Timestamp lastupdate) {
         this.id = id;
         this.name = name;
         this.path = path;
         this.date = date;
-        this.update = update;
+        this.lastupdate = lastupdate;
     }
 
     public Audio(int id, String name, String path) {
@@ -63,12 +63,12 @@ public class Audio {
         this.date = date;
     }
 
-    public Timestamp getUpdate() {
-        return update;
+    public Timestamp getLastupdate() {
+        return lastupdate;
     }
 
-    public void setUpdate(Timestamp update) {
-        this.update = update;
+    public void setLastupdate(Timestamp lastupdate) {
+        this.lastupdate = lastupdate;
     }
 
 }
