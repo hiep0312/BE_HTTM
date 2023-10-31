@@ -15,7 +15,7 @@ import app.model.Transcript;
 public class TranscriptDao {
     private static final String GET_COUNT_TRANSCRIPT = "SELECT COUNT(*) as total FROM transcript";
     private static final String GET_TRANSCRIPT = "SELECT * FROM transcript LIMIT ? OFFSET ?";
-    private static final String GET_TRANSCRIPT_NEW = "SELECT * FROM transcript Order by ? ? LIMIT ? OFFSET ?";
+   // private static final String GET_TRANSCRIPT_NEW = "SELECT * FROM transcript Order by ? ? LIMIT ? OFFSET ?";
     private static final String ADD_TRANSCRIPT = "INSERT INTO transcript (name, content) VALUES (?, ?)";
     private static final String UPDATE_TRANSCRIPT = "UPDATE transcript SET content = ?, name = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
     private static final String DELETE_TRANSCRIPT = "DELETE FROM transcript WHERE id = ?";

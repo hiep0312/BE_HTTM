@@ -27,9 +27,9 @@ public class SampleController {
         return sampleDao.addSample(new Sample(name, audioId, transcriptId));
     }
 
-    @PostMapping("/editsample{id}{audioId}{transcriptId}")
-    public ResponseEntity<?> editSample(int id, int audioId, int transcriptId) {
-        return sampleDao.editSample(id, audioId, transcriptId);
+    @PostMapping("/editsample")
+    public ResponseEntity<?> editSample(@RequestParam int id, @RequestParam String name, @RequestParam int audioId, @RequestParam int transcriptId) {
+        return sampleDao.editSample(id, name, audioId, transcriptId);
     }
 
     @PostMapping("/deletesample{id}")
@@ -41,4 +41,7 @@ public class SampleController {
     public ResponseEntity<?> getSampleByName(@RequestParam String name) {
         return sampleDao.getSampleByName(name);
     }
+
+    
+    
 }

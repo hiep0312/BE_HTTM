@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import app.model.Dataset;
-import app.model.Sample;
 
 public class DatasetDAO {
     private final static String GET_ALL_DATASET = "SELECT * FROM dataset";
@@ -32,6 +32,9 @@ public class DatasetDAO {
 
         return list;
     }
+
+
+    
 
     
 }

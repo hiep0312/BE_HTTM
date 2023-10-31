@@ -15,7 +15,7 @@ public class SampleDao {
     private static final String GET_SAMPLE = "SELECT * FROM sample LIMIT ? OFFSET ?";
     private static final String ADD_SAMPLE = "INSERT INTO sample (name, audioId, transcriptId) VALUES (?, ?, ?)";
     private static final String DELETE_SAMPLE = "DELETE FROM sample WHERE id = ?";
-    private static final String UPDATE_SAMPLE = "UPDATE sample SET audioId = ?, transcriptId = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
+    private static final String UPDATE_SAMPLE = "UPDATE sample SET name = ?, audioId = ?, transcriptId = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
     private static final String GET_SAMPLE_BY_NAME = "SELECT * FROM sample WHERE name = ?";
     
 
@@ -97,13 +97,14 @@ public class SampleDao {
         }
     }
 
-    public ResponseEntity<?> editSample(int id, int audioId, int transcriptId) {
+    public ResponseEntity<?> editSample(int id, String name, int audioId, int transcriptId) {
         try (Connection conn = MySql.getConnection();
         PreparedStatement ps = conn.prepareStatement(UPDATE_SAMPLE)) {
 
-            ps.setInt(1, audioId);
-            ps.setInt(2, transcriptId);
-            ps.setInt(3, id);
+            ps.setString(1, name);
+            ps.setInt(2, audioId);
+            ps.setInt(3, transcriptId);
+            ps.setInt(4, id);
 
             ps.executeUpdate();
 
