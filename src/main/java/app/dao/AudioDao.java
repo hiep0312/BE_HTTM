@@ -104,7 +104,7 @@ public class AudioDao {
             
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body(null);
+            return ResponseEntity.internalServerError().body("return audio failed".getBytes());
         }
     }
 
