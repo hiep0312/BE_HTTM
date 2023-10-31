@@ -16,6 +16,8 @@ public class SampleDao {
     private static final String ADD_SAMPLE = "INSERT INTO sample (name, audioId, transcriptId) VALUES (?, ?, ?)";
     private static final String DELETE_SAMPLE = "DELETE FROM sample WHERE id = ?";
     private static final String UPDATE_SAMPLE = "UPDATE sample SET audioId = ?, transcriptId = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
+    private static final String GET_SAMPLE_BY_NAME = "SELECT * FROM sample WHERE name = ?";
+    
 
     public List<Sample> getSamples(int start_idx, int cnt) {
         List<Sample> samples = new ArrayList<>();
@@ -111,6 +113,26 @@ public class SampleDao {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
+    public ResponseEntity<?> getSampleByName(String name) {
+        try (Connection conn = MySql.getConnection()){
+            PreparedStatement ps = conn.prepareStatement(GET_SAMPLE_BY_NAME);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+            Sample sample = new Sample(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("audioId"),
+                    rs.getInt("transcriptId"),
+                    rs.getTimestamp("date"),
+                    rs.getTimestamp("lastupdate"));
+            return ResponseEntity.ok().body(sample);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("No sample with name: " + name);
         }
     }
 }

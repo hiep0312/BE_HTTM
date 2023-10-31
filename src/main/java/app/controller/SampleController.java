@@ -36,4 +36,9 @@ public class SampleController {
     public ResponseEntity<?> deleteSample(int id) {
         return sampleDao.deleteSample(id);
     }
+
+    @GetMapping("/sample-by-name")
+    public ResponseEntity<?> getSampleByName(@RequestParam String name) {
+        return sampleDao.getSampleByName(name);
+    }
 }
