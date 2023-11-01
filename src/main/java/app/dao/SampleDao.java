@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import app.model.Sample;
+import app.util.Util;
 
 public class SampleDao {
 
@@ -38,6 +39,48 @@ public class SampleDao {
             ps = conn.prepareStatement(GET_SAMPLE);
             ps.setInt(1, fixed_cnt);
             ps.setInt(2, start_idx);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                samples.add(new Sample(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("audioId"),
+                    rs.getInt("transcriptId"),
+                    rs.getTimestamp("date"),
+                    rs.getTimestamp("lastupdate")));
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return samples;
+    }
+
+    public List<Sample> getSamples(int start_idx, int cnt, String sortBy, boolean ascend) {
+        List<Sample> samples = new ArrayList<>();
+
+        try (Connection conn = MySql.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) as total FROM sample");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            int total = rs.getInt("total");
+
+            if (start_idx >= total) {
+                System.out.println("No sample");
+                return samples;
+            }
+
+            int fixed_cnt = Math.min(cnt, total - start_idx);
+
+            ps = conn.prepareStatement(Util.getTranscriptQuery("sample", start_idx, fixed_cnt, sortBy, ascend));
+            // ps.setInt(1, fixed_cnt);
+            // ps.setInt(2, start_idx);
             rs = ps.executeQuery();
 
             while (rs.next()) {

@@ -20,9 +20,14 @@ import app.model.Audio;
 public class AudioController {
     AudioDao audioDao = new AudioDao();
 
+    // @GetMapping("/audios")
+    // public List<Audio> getAudios(@RequestParam("start_idx") int start_idx, @RequestParam("count") int count) {
+    //     return audioDao.getAudios(start_idx, count);
+    // }
+
     @GetMapping("/audios")
-    public List<Audio> getAudios(@RequestParam("start_idx") int start_idx, @RequestParam("count") int count) {
-        return audioDao.getAudios(start_idx, count);
+    public List<Audio> getAudios(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
+        return audioDao.getAudios(start_idx, count, sortBy, ascend);
     }
 
     @GetMapping("/audio{id}")

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import app.model.Audio;
 import app.util.FileCopier;
+import app.util.Util;
 
 public class AudioDao {
     // public static String parent_folder = "D:/SourceCode/tts/BE/";"D:\\SourceCode\\Java\\tts\\BE\\Audios\\"
@@ -73,6 +74,49 @@ public class AudioDao {
 
         return audios;
     }
+
+
+    public List<Audio> getAudios(int start_idx, int cnt, String sortBy, boolean ascend) {
+        List<Audio> audios = new ArrayList<Audio>();
+
+        try (Connection conn = MySql.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(GET_COUNT_AUDIOS);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            int total = rs.getInt("total");
+            if (start_idx >= total) {
+                System.out.println("No audio");
+                return audios;
+            }
+
+            int fixed_cnt = Math.min(cnt, total - start_idx);
+
+            ps = conn.prepareStatement(Util.getTranscriptQuery("audio", start_idx, fixed_cnt, sortBy, ascend));
+            // ps.setInt(1, fixed_cnt);
+            // ps.setInt(2, start_idx);
+            System.out.println(ps.toString());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                audios.add(new Audio(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("path"),
+                        rs.getTimestamp("date"),
+                        rs.getTimestamp("lastupdate")));
+            }
+
+            ps.close();
+            rs.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return audios;
+    }
+
 
     public ResponseEntity<byte[]> getAudioFileById(int id) {
         try (Connection conn = MySql.getConnection();

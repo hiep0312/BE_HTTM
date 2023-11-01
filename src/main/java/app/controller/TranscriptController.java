@@ -49,7 +49,7 @@ public class TranscriptController {
     }
 
     @GetMapping("/transcripts")
-    public List<Transcript> getTranscripts(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "true") boolean ascend) {
+    public List<Transcript> getTranscripts(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
         return transcriptDao.getTranscript(start_idx, count, sortBy, ascend);
     }
 }

@@ -17,9 +17,9 @@ import app.model.Sample;
 public class SampleController {
     SampleDao sampleDao = new SampleDao();
 
-    @GetMapping("/samples{start_idx}{count}")
-    public List<Sample> getSamples(int start_idx, int count) {
-        return sampleDao.getSamples(start_idx, count);
+    @GetMapping("/samples")
+    public List<Sample> getSamples(@RequestParam int start_idx,@RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
+        return sampleDao.getSamples(start_idx, count, sortBy, ascend);
     }
 
     @PostMapping("/addsample")
