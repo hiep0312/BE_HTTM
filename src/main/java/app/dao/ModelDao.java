@@ -6,12 +6,17 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import app.model.Model;
+
 
 public class ModelDao {
 
     private static final String GET_MODEL_BY_TASK = "SELECT * FROM model WHERE task = ?";
     private static final String GET_MODEL_BY_ID = "SELECT * FROM model WHERE id = ?";
+    private static final String ADD_MODEL = "INSERT INTO model(name, path, mos, datasetId, algorithmId, task) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String DELETE_MODEL = "DELETE FROM model WHERE id = ?";
 
     public List<Model> getModelsByTask(String task) {
         List<Model> models = new ArrayList<>();
@@ -55,4 +60,43 @@ public class ModelDao {
         }
     }
     
+    public ResponseEntity<?> addModel(Model model) {
+        try (Connection conn = MySql.getConnection()){
+            
+            PreparedStatement ps = conn.prepareStatement(ADD_MODEL);
+            ps.setString(1, model.getName());
+            ps.setString(2, model.getPath());
+            ps.setFloat(3, model.getMos());
+            ps.setInt(4, model.getDatasetId());
+            ps.setInt(5, model.getAlgorithmId());
+            ps.setString(6, model.getTask());
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            return ResponseEntity.ok().body("Add model successfully: " + model);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Add model failed");
+        }
+    }
+
+
+    public ResponseEntity<?> deleteModel(int id) {
+        try (Connection conn = MySql.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(DELETE_MODEL);
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+            
+            ps.close();
+            conn.close();
+            return ResponseEntity.ok().body("Delete model successfully: " + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
 }

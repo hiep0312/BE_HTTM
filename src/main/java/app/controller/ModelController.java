@@ -2,6 +2,7 @@ package app.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,17 @@ public class ModelController {
         
         String result = restTemplate.postForObject(uri, null, String.class);
         return result;
+    }
+
+    @PostMapping("addmodel")
+    public ResponseEntity<?> addModel(@RequestParam String name, @RequestParam String path, @RequestParam float mos, @RequestParam int datasetId, @RequestParam int algorithmId, @RequestParam String task) {
+        Model model = new Model(name, path, mos, datasetId, algorithmId, task);
+        return modelDao.addModel(model);
+    }
+
+    @PostMapping("deletemodel")
+    public ResponseEntity<?> deleteModel(@RequestParam int id) {
+        return modelDao.deleteModel(id);
     }
 }
 
