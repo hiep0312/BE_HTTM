@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.dao.AudioDao;
-import app.model.ObjectIndex;
+import app.model.Audio;
 import app.model.UploadedFile;
 
 @RestController
@@ -61,8 +61,8 @@ public class AudioController {
 
 
     @PostMapping("/deleteaudio")
-    public ResponseEntity<?> deleteAudio(@RequestBody Integer id) {
-        return audioDao.deleteAudio(id);
+    public ResponseEntity<?> deleteAudio(@RequestBody Audio audio) {
+        return audioDao.deleteAudio(audio.getId());
     }
 
     @PostMapping("/editaudio")

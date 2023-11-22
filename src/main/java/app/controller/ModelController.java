@@ -57,8 +57,8 @@ public class ModelController {
     }
 
     @PostMapping("deletemodel")
-    public ResponseEntity<?> deleteModel(@RequestBody Integer id) {
-        return modelDao.deleteModel(id);
+    public ResponseEntity<?> deleteModel(@RequestBody Model model) {
+        return modelDao.deleteModel(model.getId());
     }
 }
 

@@ -52,8 +52,8 @@ public class TranscriptController {
     }
 
     @PostMapping("/deletetranscript")
-    public ResponseEntity<String> deleteTranscript(@RequestBody Integer id) {
-        return transcriptDao.deleteTranscript(id);
+    public ResponseEntity<String> deleteTranscript(@RequestBody Transcript transcript) {
+        return transcriptDao.deleteTranscript(transcript.getId());
     }
 
     @GetMapping("/transcript-by-name")

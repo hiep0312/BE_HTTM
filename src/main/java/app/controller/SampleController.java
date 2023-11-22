@@ -45,8 +45,8 @@ public class SampleController {
     }
 
     @PostMapping("/deletesample")
-    public ResponseEntity<?> deleteSample(@RequestBody Integer id) {
-        return sampleDao.deleteSample(id);
+    public ResponseEntity<?> deleteSample(@RequestBody Sample sample) {
+        return sampleDao.deleteSample(sample.getId());
     }
 
     @GetMapping("/sample-by-name")
