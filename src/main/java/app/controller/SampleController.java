@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,14 +23,19 @@ public class SampleController {
         return sampleDao.getSamples(start_idx, count, sortBy, ascend);
     }
 
+    // @PostMapping("/addsample")
+    // public ResponseEntity<?> addSample(@RequestParam String name, @RequestParam int audioId, @RequestParam int transcriptId) {
+    //     return sampleDao.addSample(new Sample(name, audioId, transcriptId));
+    // }
+
     @PostMapping("/addsample")
-    public ResponseEntity<?> addSample(@RequestParam String name, @RequestParam int audioId, @RequestParam int transcriptId) {
-        return sampleDao.addSample(new Sample(name, audioId, transcriptId));
+    public ResponseEntity<?> addSample(@RequestBody Sample sample) {
+        return sampleDao.addSample(sample);
     }
 
     @PostMapping("/editsample")
-    public ResponseEntity<?> editSample(@RequestParam int id, @RequestParam String name, @RequestParam int audioId, @RequestParam int transcriptId) {
-        return sampleDao.editSample(id, name, audioId, transcriptId);
+    public ResponseEntity<?> editSample(@RequestBody Sample sample) {
+        return sampleDao.editSample(sample);
     }
 
     @PostMapping("/deletesample{id}")

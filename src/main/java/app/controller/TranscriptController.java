@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,28 +24,38 @@ public class TranscriptController {
     //     return transcriptDao.getTranscript(start_idx, count);
     // }
 
-    @PostMapping("/addtranscript{name}{content}")
-    public ResponseEntity<?> addTranscript(String name, String content) {
-        return transcriptDao.addTranscript(new Transcript(name, content));
+    // @PostMapping("/addtranscript{name}{content}")
+    // public ResponseEntity<?> addTranscript(String name, String content) {
+    //     return transcriptDao.addTranscript(new Transcript(name, content));
+    // }
+
+    @PostMapping("/addtranscript")
+    public ResponseEntity<?> addTranscript(@RequestBody Transcript transcript) {
+        return transcriptDao.addTranscript(transcript);
     }
 
-    @PostMapping("/edittranscript{id}{name}{content}")
-    public ResponseEntity<String> editTranscript(int id, String name, String content) {
-        return transcriptDao.editTranscript(id, name, content);
+    // @PostMapping("/edittranscript{id}{name}{content}")
+    // public ResponseEntity<String> editTranscript(int id, String name, String content) {
+    //     return transcriptDao.editTranscript(id, name, content);
+    // }
+
+    @PostMapping("/edittranscript")
+    public ResponseEntity<String> editTranscript(@RequestBody Transcript transcript) {
+        return transcriptDao.editTranscript(transcript);
     }
 
-    @PostMapping("/deletetranscript{id}")
-    public ResponseEntity<String> deleteTranscript(int id) {
+    @PostMapping("/deletetranscript")
+    public ResponseEntity<String> deleteTranscript(@RequestParam int id) {
         return transcriptDao.deleteTranscript(id);
     }
 
     @GetMapping("/transcript-by-name")
-    public ResponseEntity<?> getTranscriptByName(@RequestParam("name") String name) {
+    public ResponseEntity<?> getTranscriptByName(@RequestParam String name) {
         return transcriptDao.getTranscriptByName(name);
     }
 
-    @GetMapping("/transcript{id}")
-    public ResponseEntity<?> getTranscriptById(int id) {
+    @GetMapping("/transcript")
+    public ResponseEntity<?> getTranscriptById(@RequestParam int id) {
         return transcriptDao.getTranscriptById(id);
     }
 

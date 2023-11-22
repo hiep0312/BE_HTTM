@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -44,9 +45,14 @@ public class ModelController {
         return result;
     }
 
+    // @PostMapping("addmodel")
+    // public ResponseEntity<?> addModel(@RequestParam String name, @RequestParam String path, @RequestParam float mos, @RequestParam int datasetId, @RequestParam int algorithmId, @RequestParam String task) {
+    //     Model model = new Model(name, path, mos, datasetId, algorithmId, task);
+    //     return modelDao.addModel(model);
+    // }
+
     @PostMapping("addmodel")
-    public ResponseEntity<?> addModel(@RequestParam String name, @RequestParam String path, @RequestParam float mos, @RequestParam int datasetId, @RequestParam int algorithmId, @RequestParam String task) {
-        Model model = new Model(name, path, mos, datasetId, algorithmId, task);
+    public ResponseEntity<?> addModel(@RequestBody Model model) {
         return modelDao.addModel(model);
     }
 

@@ -159,6 +159,25 @@ public class TranscriptDao {
         }
     }
 
+    public ResponseEntity<String> editTranscript(Transcript transcript) {
+        try (Connection conn = MySql.getConnection();
+        PreparedStatement ps = conn.prepareStatement(UPDATE_TRANSCRIPT)) {
+
+            ps.setString(1, transcript.getContent());
+            ps.setString(2, transcript.getName());
+            ps.setInt(3, transcript.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+            return ResponseEntity.ok().body("Update transcript successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Update transcript failed");
+        }
+    }
+
 
     public ResponseEntity<String> deleteTranscript(int id) {
         try (Connection conn = MySql.getConnection()) {

@@ -18,7 +18,6 @@ public class SampleDao {
     private static final String DELETE_SAMPLE = "DELETE FROM sample WHERE id = ?";
     private static final String UPDATE_SAMPLE = "UPDATE sample SET name = ?, audioId = ?, transcriptId = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
     private static final String GET_SAMPLE_BY_NAME = "SELECT * FROM sample WHERE name = ?";
-    
 
     public List<Sample> getSamples(int start_idx, int cnt) {
         List<Sample> samples = new ArrayList<>();
@@ -43,12 +42,12 @@ public class SampleDao {
 
             while (rs.next()) {
                 samples.add(new Sample(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getInt("audioId"),
-                    rs.getInt("transcriptId"),
-                    rs.getTimestamp("date"),
-                    rs.getTimestamp("lastupdate")));
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("audioId"),
+                        rs.getInt("transcriptId"),
+                        rs.getTimestamp("date"),
+                        rs.getTimestamp("lastupdate")));
             }
 
             rs.close();
@@ -85,12 +84,12 @@ public class SampleDao {
 
             while (rs.next()) {
                 samples.add(new Sample(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getInt("audioId"),
-                    rs.getInt("transcriptId"),
-                    rs.getTimestamp("date"),
-                    rs.getTimestamp("lastupdate")));
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("audioId"),
+                        rs.getInt("transcriptId"),
+                        rs.getTimestamp("date"),
+                        rs.getTimestamp("lastupdate")));
             }
 
             rs.close();
@@ -113,7 +112,7 @@ public class SampleDao {
             ps.setInt(3, sample.getTranscriptId());
 
             ps.executeUpdate();
-            
+
             ps.close();
             conn.close();
             return ResponseEntity.ok().body("Add sample successfully: " + sample);
@@ -130,7 +129,7 @@ public class SampleDao {
             ps.setInt(1, id);
 
             ps.executeUpdate();
-            
+
             ps.close();
             conn.close();
             return ResponseEntity.ok().body("Delete sample successfully: " + id);
@@ -142,7 +141,7 @@ public class SampleDao {
 
     public ResponseEntity<?> editSample(int id, String name, int audioId, int transcriptId) {
         try (Connection conn = MySql.getConnection();
-        PreparedStatement ps = conn.prepareStatement(UPDATE_SAMPLE)) {
+                PreparedStatement ps = conn.prepareStatement(UPDATE_SAMPLE)) {
 
             ps.setString(1, name);
             ps.setInt(2, audioId);
@@ -160,8 +159,28 @@ public class SampleDao {
         }
     }
 
+    public ResponseEntity<?> editSample(Sample sample) {
+        try (Connection conn = MySql.getConnection();
+                PreparedStatement ps = conn.prepareStatement(UPDATE_SAMPLE)) {
+
+            ps.setString(1, sample.getName());
+            ps.setInt(2, sample.getAudioId());
+            ps.setInt(3, sample.getTranscriptId());
+            ps.setInt(4, sample.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+            return ResponseEntity.ok().body("Update sample successfully: " + sample.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
     public ResponseEntity<?> getSampleByName(String name) {
-        try (Connection conn = MySql.getConnection()){
+        try (Connection conn = MySql.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(GET_SAMPLE_BY_NAME);
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();

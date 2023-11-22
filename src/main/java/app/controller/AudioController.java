@@ -1,19 +1,19 @@
 package app.controller;
 
 
-import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import app.dao.AudioDao;
-import app.model.Audio;
+import app.model.ObjectIndex;
+import app.model.UploadedFile;
 
 @RestController
 @CrossOrigin
@@ -25,13 +25,18 @@ public class AudioController {
     //     return audioDao.getAudios(start_idx, count);
     // }
 
+    // @GetMapping("/audios")
+    // public List<Audio> getAudios(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
+    //     return audioDao.getAudios(start_idx, count, sortBy, ascend);
+    // }
+
     @GetMapping("/audios")
-    public List<Audio> getAudios(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
-        return audioDao.getAudios(start_idx, count, sortBy, ascend);
+    public ResponseEntity<?> getAudios(@RequestBody ObjectIndex  audioIndex) {
+        return audioDao.getAudios(audioIndex);
     }
 
-    @GetMapping("/audio{id}")
-    public ResponseEntity<?> getAudioById(int id) {
+    @GetMapping("/audio")
+    public ResponseEntity<?> getAudioById(@RequestParam int id) {
         return audioDao.getAudioById(id);
     }
 
@@ -41,19 +46,30 @@ public class AudioController {
     }
 
 
-    @PostMapping("/addaudio")
-    public ResponseEntity<?> addAudio(@RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
-        return audioDao.addAudio(name, audio);
+    // @PostMapping("/addaudio")
+    // public ResponseEntity<?> addAudio(@RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
+    //     return audioDao.addAudio(name, audio);
+    // }
+
+     @PostMapping("/addaudio")
+    public ResponseEntity<?> addAudio(@RequestBody UploadedFile file) {
+        return audioDao.addAudio(file);
     }
 
-    @PostMapping("/deleteaudio{id}")
-    public ResponseEntity<?> deleteAudio(int id) {
+
+    @PostMapping("/deleteaudio")
+    public ResponseEntity<?> deleteAudio(@RequestParam int id) {
         return audioDao.deleteAudio(id);
     }
 
+    // @PostMapping("/editaudio")
+    // public ResponseEntity<?> editAudio(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
+    //     return audioDao.editAudio(id, name, audio);
+    // }
+
     @PostMapping("/editaudio")
-    public ResponseEntity<?> editAudio(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
-        return audioDao.editAudio(id, name, audio);
+    public ResponseEntity<?> editAudio(@RequestBody UploadedFile file) {
+        return audioDao.editAudio(file);
     }
 
     @GetMapping("/audio-by-name")
@@ -62,3 +78,4 @@ public class AudioController {
     }
     
 }
+

@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import app.model.Audio;
+import app.model.ObjectIndex;
+import app.model.UploadedFile;
 import app.util.FileCopier;
 import app.util.Util;
 
@@ -35,7 +37,7 @@ public class AudioDao {
     }
 
 
-    public List<Audio> getAudios(int start_idx, int cnt) {
+    public ResponseEntity<?> getAudios(ObjectIndex audioIndex) {
         List<Audio> audios = new ArrayList<Audio>();
 
         try (Connection conn = MySql.getConnection()) {
@@ -43,16 +45,16 @@ public class AudioDao {
             ResultSet rs = ps.executeQuery();
             rs.next();
             int total = rs.getInt("total");
-            if (start_idx >= total) {
+            if (audioIndex.getStart_idx() >= total) {
                 System.out.println("No transcript");
-                return audios;
+                return ResponseEntity.ok().body(audios);
             }
 
-            int fixed_cnt = Math.min(cnt, total - start_idx);
+            int fixed_cnt = Math.min(audioIndex.getCount(), total - audioIndex.getStart_idx());
 
             ps = conn.prepareStatement(GET_AUDIOS);
             ps.setInt(1, fixed_cnt);
-            ps.setInt(2, start_idx);
+            ps.setInt(2, audioIndex.getStart_idx());
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -72,7 +74,7 @@ public class AudioDao {
             e.printStackTrace();
         }
 
-        return audios;
+        return ResponseEntity.ok().body(audios);
     }
 
 
@@ -116,6 +118,7 @@ public class AudioDao {
 
         return audios;
     }
+
 
 
     public ResponseEntity<byte[]> getAudioFileById(int id) {
@@ -183,6 +186,35 @@ public class AudioDao {
         }
     }
 
+    public ResponseEntity<?> addAudio(UploadedFile uploaded) {
+        try (Connection conn = MySql.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(ADD_AUDIO);
+
+            String path = AudioDao.parent_folder + uploaded.getFile().getOriginalFilename();
+            // File file = new File(path);
+            // file.createNewFile();
+
+            System.out.println(path);
+            // String query = "INSERT INTO audio (name, path) VALUES (?, ?)";
+
+            FileCopier.copyFile(uploaded.getFile().getInputStream(), Paths.get(path));
+            Files.copy(uploaded.getFile().getInputStream(), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+
+            ps.setString(1, uploaded.getName());
+            ps.setString(2, uploaded.getFile().getOriginalFilename());
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            return ResponseEntity.ok().body("Add audio successfully " + uploaded.getName() + " " + uploaded.getFile().getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Add audio failed");
+        }
+    }
+
     public ResponseEntity<?> deleteAudio(int id) {
         try (Connection conn = MySql.getConnection()) {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM sample WHERE audioId = ?");
@@ -203,16 +235,17 @@ public class AudioDao {
         }
     }
 
-    public ResponseEntity<?> editAudio(int id, String name, MultipartFile audio) {
+    public ResponseEntity<?> editAudio(UploadedFile file) {
         try (Connection conn = MySql.getConnection();
                 PreparedStatement ps = conn.prepareStatement(UPDATE_AUDIO)) {
 
+            MultipartFile audio = file.getFile();
             String path = AudioDao.parent_folder + audio.getOriginalFilename();
             // String query = "INSERT INTO audio (name, path) VALUES (?, ?)";
             FileCopier.copyFile(audio.getInputStream(), Paths.get(path));
-            ps.setString(1, name);
+            ps.setString(1, file.getName());
             ps.setString(2, audio.getOriginalFilename());
-            ps.setInt(3, id);
+            ps.setInt(3, file.getId());
             ps.executeUpdate();
 
             ps.close();
