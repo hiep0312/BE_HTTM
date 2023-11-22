@@ -36,8 +36,8 @@ public class ModelController {
     }
 
     @PostMapping("/model")
-    public String getModelById(@RequestParam int ttmId, @RequestParam int vocoderId) {
-        String uri = pythonIp + "/model-path/?ttmPath=" + modelDao.getPath(ttmId) + "&vocoderPath=" + modelDao.getPath(vocoderId);
+    public String getModelById(@RequestBody ModelTask modelTask) {
+        String uri = pythonIp + "/model-path/?ttmPath=" + modelDao.getPath(modelTask.getTtmId()) + "&vocoderPath=" + modelDao.getPath(modelTask.getVocoderId());
         System.out.println(uri);
         RestTemplate restTemplate = new RestTemplate();
         
@@ -57,8 +57,31 @@ public class ModelController {
     }
 
     @PostMapping("deletemodel")
-    public ResponseEntity<?> deleteModel(@RequestParam int id) {
+    public ResponseEntity<?> deleteModel(@RequestBody Integer id) {
         return modelDao.deleteModel(id);
     }
 }
 
+
+class ModelTask {
+    private int ttmId;
+    private int vocoderId;
+    public ModelTask(int ttmId, int vocoderId) {
+        this.ttmId = ttmId;
+        this.vocoderId = vocoderId;
+    }
+    public int getTtmId() {
+        return ttmId;
+    }
+    public void setTtmId(int ttmId) {
+        this.ttmId = ttmId;
+    }
+    public int getVocoderId() {
+        return vocoderId;
+    }
+    public void setVocoderId(int vocoderId) {
+        this.vocoderId = vocoderId;
+    }
+
+    
+}

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -17,16 +18,16 @@ public class ModelTestController {
     private static final String ip = "http://localhost:80";
 
     @PostMapping("/train{id}")
-    public ResponseEntity<?> trainModel(@RequestParam int algorithmId, @RequestParam int datasetId, @RequestParam String modelName) {
-        String uri = ip + "/start_training?algorithmId=" + algorithmId + "&" + "datasetId=" + datasetId + "&"
-                + "modelName=" + modelName;
+    public ResponseEntity<?> trainModel(@RequestBody ModelTrain model) {
+        String uri = ip + "/start_training?algorithmId=" + model.getAlgorithmId() + "&" + "datasetId=" + model.getDatasetId() + "&"
+                + "modelName=" + model.getModelName();
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.postForObject(uri, null, String.class);
         return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/test/tts")
-    public ResponseEntity<byte[]> testModel(@RequestParam String text) {
+    public ResponseEntity<byte[]> testModel(@RequestBody String text) {
         String uri = ip + "/tts?text=" + text;
         System.out.println("tts uri: " + uri);
         RestTemplate restTemplate = new RestTemplate();
@@ -41,7 +42,7 @@ public class ModelTestController {
     }
 
     @GetMapping("/tts")
-    public ResponseEntity<?> getAudiogenId(@RequestParam String text) {
+    public ResponseEntity<?> getAudiogenId(@RequestBody String text) {
         String uri = ip + "/tts?text=" + text;
         System.out.println("tts uri: " + uri);
         RestTemplate restTemplate = new RestTemplate();
@@ -50,7 +51,7 @@ public class ModelTestController {
     }
 
     @GetMapping("/audiogen")
-    public ResponseEntity<byte[]> getAudioGenerated(@RequestParam int id) {
+    public ResponseEntity<byte[]> getAudioGenerated(@RequestBody Integer id) {
 
         RestTemplate restTemplate = new RestTemplate();
         String uriAudioGen = ip + "/audiogen?id=" + id;
@@ -58,5 +59,41 @@ public class ModelTestController {
         byte[] audioFile = restTemplate.getForObject(uriAudioGen, byte[].class);
 
         return Util.getAudioResponse(audioFile, String.valueOf(id));
+    }
+}
+
+class ModelTrain {
+    private int algorithmId;
+    private int datasetId;
+    private String modelName;
+
+    public ModelTrain(int algorithmId, int datasetId, String modelName) {
+        this.algorithmId = algorithmId;
+        this.datasetId = datasetId;
+        this.modelName = modelName;
+    }
+
+    public int getAlgorithmId() {
+        return algorithmId;
+    }
+
+    public void setAlgorithmId(int algorithmId) {
+        this.algorithmId = algorithmId;
+    }
+
+    public int getDatasetId() {
+        return datasetId;
+    }
+
+    public void setDatasetId(int datasetId) {
+        this.datasetId = datasetId;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelname) {
+        this.modelName = modelname;
     }
 }

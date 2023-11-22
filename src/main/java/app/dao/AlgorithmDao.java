@@ -6,12 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import app.model.Algorithm;
 
 public class AlgorithmDao {
     private static String GET_ALL_ALGORITHM = "SELECT * FROM algorithm";
 
-    public List<Algorithm> getAllAlgorithm() {
+    public ResponseEntity<?> getAllAlgorithm() {
         List<Algorithm> list = new ArrayList<>();
 
         try (Connection conn = MySql.getConnection()) {
@@ -32,6 +34,6 @@ public class AlgorithmDao {
             e.printStackTrace();
         }
 
-        return list;
+        return ResponseEntity.ok().body(list);
     }
 }

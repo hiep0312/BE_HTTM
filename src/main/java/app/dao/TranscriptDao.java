@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 
+import app.model.ObjectIndex;
 import app.model.Transcript;
 
 
@@ -21,31 +22,33 @@ public class TranscriptDao {
     private static final String DELETE_TRANSCRIPT = "DELETE FROM transcript WHERE id = ?";
     private static final String GET_TRANSCRIPT_BY_NAME = "SELECT * FROM transcript WHERE name = ?";
     private static final String GET_TRANSCRIPT_BY_ID = "SELECT * FROM transcript WHERE id = ?";
-    
 
-    public List<Transcript> getTranscript(int startIdx, int cnt) {
+    public List<Transcript> getTranscript(ObjectIndex transcriptIndex) {
         List<Transcript> transcripts = new ArrayList<Transcript>();
 
         try (Connection conn = MySql.getConnection()) {
 
 
             PreparedStatement ps = conn.prepareStatement(GET_COUNT_TRANSCRIPT);
-            
+
             ResultSet rs = ps.executeQuery();
             rs.next();
             int total = rs.getInt("total");
            
-            if (startIdx >= total) {
+            if (transcriptIndex.getStart_idx() >= total) {
                 System.out.println("No transcript");
                 return transcripts;
             }
 
-            int fixed_cnt = Math.min(cnt, total - startIdx);
+            int fixed_cnt = Math.min(transcriptIndex.getCount(), total - transcriptIndex.getStart_idx());
            
-            ps = conn.prepareStatement(GET_TRANSCRIPT);
-            ps.setInt(1, fixed_cnt);
-            ps.setInt(2, startIdx);
-            System.out.println();
+            ps = conn.prepareStatement(getTranscriptQuery(transcriptIndex.getStart_idx(), fixed_cnt, transcriptIndex.getSortBy(), transcriptIndex.isAscend()));
+            // ps.setString(1, sortBy);
+            // ps.setString(2, ascend ? "asc" : "desc");
+            // ps.setInt(3, fixed_cnt);
+            // ps.setInt(4, startIdx);
+            System.out.println(ps.toString());
+            
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -67,7 +70,6 @@ public class TranscriptDao {
         
         return transcripts;
     }
-    
 
     public List<Transcript> getTranscript(int startIdx, int cnt, String sortBy, boolean ascend) {
         List<Transcript> transcripts = new ArrayList<Transcript>();

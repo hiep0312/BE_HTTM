@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.dao.TranscriptDao;
+import app.model.ObjectIndex;
 import app.model.Transcript;
 
 
@@ -29,15 +30,20 @@ public class TranscriptController {
     //     return transcriptDao.addTranscript(new Transcript(name, content));
     // }
 
-    @PostMapping("/addtranscript")
-    public ResponseEntity<?> addTranscript(@RequestBody Transcript transcript) {
-        return transcriptDao.addTranscript(transcript);
-    }
-
     // @PostMapping("/edittranscript{id}{name}{content}")
     // public ResponseEntity<String> editTranscript(int id, String name, String content) {
     //     return transcriptDao.editTranscript(id, name, content);
     // }
+
+    // @GetMapping("/transcripts")
+    // public List<Transcript> getTranscripts(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
+    //     return transcriptDao.getTranscript(start_idx, count, sortBy, ascend);
+    // }
+
+    @PostMapping("/addtranscript")
+    public ResponseEntity<?> addTranscript(@RequestBody Transcript transcript) {
+        return transcriptDao.addTranscript(transcript);
+    }
 
     @PostMapping("/edittranscript")
     public ResponseEntity<String> editTranscript(@RequestBody Transcript transcript) {
@@ -45,22 +51,22 @@ public class TranscriptController {
     }
 
     @PostMapping("/deletetranscript")
-    public ResponseEntity<String> deleteTranscript(@RequestParam int id) {
+    public ResponseEntity<String> deleteTranscript(@RequestBody Integer id) {
         return transcriptDao.deleteTranscript(id);
     }
 
     @GetMapping("/transcript-by-name")
-    public ResponseEntity<?> getTranscriptByName(@RequestParam String name) {
+    public ResponseEntity<?> getTranscriptByName(@RequestBody String name) {
         return transcriptDao.getTranscriptByName(name);
     }
 
     @GetMapping("/transcript")
-    public ResponseEntity<?> getTranscriptById(@RequestParam int id) {
+    public ResponseEntity<?> getTranscriptById(@RequestBody Integer id) {
         return transcriptDao.getTranscriptById(id);
     }
 
     @GetMapping("/transcripts")
-    public List<Transcript> getTranscripts(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
-        return transcriptDao.getTranscript(start_idx, count, sortBy, ascend);
+    public List<Transcript> getTranscripts(@RequestBody ObjectIndex transcriptIndex) {
+        return transcriptDao.getTranscript(transcriptIndex);
     }
 }

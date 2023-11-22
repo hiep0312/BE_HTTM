@@ -17,6 +17,22 @@ import app.model.Sample;
 public class DatasetSampleController {
     DatasetSampleDao dsDao = new DatasetSampleDao();
 
+    // @GetMapping("/dataset-samples")
+    // public List<Sample> getSampleFromDataset(@RequestParam int start_idx, @RequestParam int count, @RequestParam int id) {
+    //     return dsDao.getSampleFromDataset(start_idx, count, id);
+    // }
+
+
+    // @PostMapping("dataset-addsample")
+    // public ResponseEntity<?> addSampleToDataset(@RequestParam int datasetId, @RequestParam int sampleId) {
+    //     return dsDao.addSampleToDataset(datasetId, sampleId);
+    // }
+
+    // @PostMapping("dataset-deletesample")
+    // public ResponseEntity<?> deleteSampleFromDataset(@RequestParam int datasetId, @RequestParam int sampleId) {
+    //     return dsDao.deleteSampleFromDataset(datasetId, sampleId);
+    // }
+
     @GetMapping("/dataset-samples")
     public List<Sample> getSampleFromDataset(@RequestParam int start_idx, @RequestParam int count, @RequestParam int id) {
         return dsDao.getSampleFromDataset(start_idx, count, id);

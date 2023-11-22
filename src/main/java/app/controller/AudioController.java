@@ -30,13 +30,24 @@ public class AudioController {
     //     return audioDao.getAudios(start_idx, count, sortBy, ascend);
     // }
 
+    // @PostMapping("/editaudio")
+    // public ResponseEntity<?> editAudio(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
+    //     return audioDao.editAudio(id, name, audio);
+    // }
+
+
+    // @PostMapping("/addaudio")
+    // public ResponseEntity<?> addAudio(@RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
+    //     return audioDao.addAudio(name, audio);
+    // }
+
     @GetMapping("/audios")
     public ResponseEntity<?> getAudios(@RequestBody ObjectIndex  audioIndex) {
         return audioDao.getAudios(audioIndex);
     }
 
     @GetMapping("/audio")
-    public ResponseEntity<?> getAudioById(@RequestParam int id) {
+    public ResponseEntity<?> getAudioById(@RequestBody Integer id) {
         return audioDao.getAudioById(id);
     }
 
@@ -46,26 +57,16 @@ public class AudioController {
     }
 
 
-    // @PostMapping("/addaudio")
-    // public ResponseEntity<?> addAudio(@RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
-    //     return audioDao.addAudio(name, audio);
-    // }
-
-     @PostMapping("/addaudio")
+    @PostMapping("/addaudio")
     public ResponseEntity<?> addAudio(@RequestBody UploadedFile file) {
         return audioDao.addAudio(file);
     }
 
 
     @PostMapping("/deleteaudio")
-    public ResponseEntity<?> deleteAudio(@RequestParam int id) {
+    public ResponseEntity<?> deleteAudio(@RequestBody Integer id) {
         return audioDao.deleteAudio(id);
     }
-
-    // @PostMapping("/editaudio")
-    // public ResponseEntity<?> editAudio(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("audio") MultipartFile audio) {
-    //     return audioDao.editAudio(id, name, audio);
-    // }
 
     @PostMapping("/editaudio")
     public ResponseEntity<?> editAudio(@RequestBody UploadedFile file) {
@@ -73,7 +74,7 @@ public class AudioController {
     }
 
     @GetMapping("/audio-by-name")
-    public ResponseEntity<?> getAudioByName (@RequestParam String name) {
+    public ResponseEntity<?> getAudioByName (@RequestBody String name) {
         return audioDao.getAudioByName(name);
     }
     

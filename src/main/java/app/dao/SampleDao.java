@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import app.model.ObjectIndex;
 import app.model.Sample;
 import app.util.Util;
 
@@ -19,7 +20,7 @@ public class SampleDao {
     private static final String UPDATE_SAMPLE = "UPDATE sample SET name = ?, audioId = ?, transcriptId = ?, lastupdate = CURRENT_TIMESTAMP WHERE id = ?";
     private static final String GET_SAMPLE_BY_NAME = "SELECT * FROM sample WHERE name = ?";
 
-    public List<Sample> getSamples(int start_idx, int cnt) {
+    public List<Sample> getSamples(ObjectIndex sampleIndex) {
         List<Sample> samples = new ArrayList<>();
 
         try (Connection conn = MySql.getConnection()) {
@@ -28,16 +29,16 @@ public class SampleDao {
             rs.next();
             int total = rs.getInt("total");
 
-            if (start_idx >= total) {
+            if (sampleIndex.getStart_idx() >= total) {
                 System.out.println("No sample");
                 return samples;
             }
 
-            int fixed_cnt = Math.min(cnt, total - start_idx);
+            int fixed_cnt = Math.min(sampleIndex.getCount(), total - sampleIndex.getStart_idx());
 
-            ps = conn.prepareStatement(GET_SAMPLE);
-            ps.setInt(1, fixed_cnt);
-            ps.setInt(2, start_idx);
+            ps = conn.prepareStatement(Util.getTranscriptQuery("sample", sampleIndex.getStart_idx(), fixed_cnt, sampleIndex.getSortBy(), sampleIndex.isAscend()));
+            // ps.setInt(1, fixed_cnt);
+            // ps.setInt(2, start_idx);
             rs = ps.executeQuery();
 
             while (rs.next()) {
