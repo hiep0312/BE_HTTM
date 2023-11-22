@@ -19,20 +19,20 @@ import app.model.Sample;
 public class SampleController {
     SampleDao sampleDao = new SampleDao();
 
-    // @GetMapping("/samples")
-    // public List<Sample> getSamples(@RequestParam int start_idx,@RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
-    //     return sampleDao.getSamples(start_idx, count, sortBy, ascend);
-    // }
+    @GetMapping("/samples")
+    public List<Sample> getSamples(@RequestParam int start_idx,@RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
+        return sampleDao.getSamples(start_idx, count, sortBy, ascend);
+    }
 
     // @PostMapping("/addsample")
     // public ResponseEntity<?> addSample(@RequestParam String name, @RequestParam int audioId, @RequestParam int transcriptId) {
     //     return sampleDao.addSample(new Sample(name, audioId, transcriptId));
     // }
 
-    @GetMapping("/samples")
-    public List<Sample> getSamples(@RequestBody ObjectIndex sampleIndex) {
-        return sampleDao.getSamples(sampleIndex);
-    }
+    // @GetMapping("/samples")
+    // public List<Sample> getSamples(@RequestBody ObjectIndex sampleIndex) {
+    //     return sampleDao.getSamples(sampleIndex);
+    // }
 
     @PostMapping("/addsample")
     public ResponseEntity<?> addSample(@RequestBody Sample sample) {
@@ -50,7 +50,7 @@ public class SampleController {
     }
 
     @GetMapping("/sample-by-name")
-    public ResponseEntity<?> getSampleByName(@RequestBody String name) {
+    public ResponseEntity<?> getSampleByName(@RequestParam String name) {
         return sampleDao.getSampleByName(name);
     }
 

@@ -23,7 +23,7 @@ public class TranscriptDao {
     private static final String GET_TRANSCRIPT_BY_NAME = "SELECT * FROM transcript WHERE name = ?";
     private static final String GET_TRANSCRIPT_BY_ID = "SELECT * FROM transcript WHERE id = ?";
 
-    public List<Transcript> getTranscript(ObjectIndex transcriptIndex) {
+    public ResponseEntity<?> getTranscript(ObjectIndex transcriptIndex) {
         List<Transcript> transcripts = new ArrayList<Transcript>();
 
         try (Connection conn = MySql.getConnection()) {
@@ -37,8 +37,7 @@ public class TranscriptDao {
            
             if (transcriptIndex.getStart_idx() >= total) {
                 System.out.println("No transcript");
-                return transcripts;
-            }
+                ResponseEntity.ok().body(transcripts);            }
 
             int fixed_cnt = Math.min(transcriptIndex.getCount(), total - transcriptIndex.getStart_idx());
            
@@ -68,7 +67,7 @@ public class TranscriptDao {
             e.printStackTrace();
         }
         
-        return transcripts;
+        return ResponseEntity.ok().body(transcripts);
     }
 
     public List<Transcript> getTranscript(int startIdx, int cnt, String sortBy, boolean ascend) {

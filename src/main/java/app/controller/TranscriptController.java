@@ -2,6 +2,7 @@ package app.controller;
 
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,17 +57,22 @@ public class TranscriptController {
     }
 
     @GetMapping("/transcript-by-name")
-    public ResponseEntity<?> getTranscriptByName(@RequestBody String name) {
+    public ResponseEntity<?> getTranscriptByName(@RequestParam String name) {
         return transcriptDao.getTranscriptByName(name);
     }
 
     @GetMapping("/transcript")
-    public ResponseEntity<?> getTranscriptById(@RequestBody Integer id) {
+    public ResponseEntity<?> getTranscriptById(@RequestParam Integer id) {
         return transcriptDao.getTranscriptById(id);
     }
 
+    // @GetMapping("/transcripts")
+    // public ResponseEntity<?> getTranscripts(ObjectIndex transcriptIndex) {
+    //     return transcriptDao.getTranscript(transcriptIndex);
+    // }
+
     @GetMapping("/transcripts")
-    public List<Transcript> getTranscripts(@RequestBody ObjectIndex transcriptIndex) {
-        return transcriptDao.getTranscript(transcriptIndex);
+    public List<Transcript> getTranscripts(@RequestParam int start_idx, @RequestParam int count, @RequestParam(defaultValue = "lastupdate") String sortBy, @RequestParam(defaultValue = "false") boolean ascend) {
+        return transcriptDao.getTranscript(start_idx, count, sortBy, ascend);
     }
 }

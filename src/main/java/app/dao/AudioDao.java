@@ -78,7 +78,7 @@ public class AudioDao {
     }
 
 
-    public List<Audio> getAudios(int start_idx, int cnt, String sortBy, boolean ascend) {
+    public ResponseEntity<?> getAudios(int start_idx, int cnt, String sortBy, boolean ascend) {
         List<Audio> audios = new ArrayList<Audio>();
 
         try (Connection conn = MySql.getConnection()) {
@@ -88,7 +88,7 @@ public class AudioDao {
             int total = rs.getInt("total");
             if (start_idx >= total) {
                 System.out.println("No audio");
-                return audios;
+                return ResponseEntity.ok().body(audios);
             }
 
             int fixed_cnt = Math.min(cnt, total - start_idx);
@@ -116,7 +116,7 @@ public class AudioDao {
             e.printStackTrace();
         }
 
-        return audios;
+        return ResponseEntity.ok().body(audios);
     }
 
 
