@@ -12,6 +12,10 @@ public class Audio {
     public Audio() { 
     }
 
+    public Audio(int id) {
+        this.id = id;
+    }
+
     public Audio(int id, String name, String path, Timestamp date, Timestamp lastupdate) {
         this.id = id;
         this.name = name;

@@ -7,6 +7,13 @@ public class UploadedFile {
     private String name;
     private MultipartFile file;
 
+    public UploadedFile() {
+    }
+
+    public UploadedFile(int id) {
+        this.id = id;
+    }
+
     public UploadedFile(String name, MultipartFile file) {
         this.name = name;
         this.file = file;

@@ -7,6 +7,10 @@ public class Dataset {
     public Dataset() {
     }
 
+    public Dataset(int id) {
+        this.id = id;
+    }
+
     public Dataset(int id, String name) {
         this.id = id;
         this.name = name;

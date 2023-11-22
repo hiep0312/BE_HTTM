@@ -8,7 +8,11 @@ public class ObjectIndex {
     public boolean ascend;
 
     public ObjectIndex() {
-        
+
+    }
+
+    ObjectIndex(int id) {
+        this.id = id;
     }
 
     public ObjectIndex(int start_idx, int count, String sortBy, boolean ascend) {

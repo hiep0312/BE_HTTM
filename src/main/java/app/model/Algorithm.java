@@ -9,6 +9,10 @@ public class Algorithm {
     public Algorithm() {
     }
 
+    public Algorithm(int id) {
+        this.id = id;
+    }
+
     public Algorithm(int id, String name, String description, String task) {
         this.id = id;
         this.name = name;

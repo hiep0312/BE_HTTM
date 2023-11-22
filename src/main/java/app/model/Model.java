@@ -15,6 +15,10 @@ public class Model {
     public Model() {
     }
 
+    public Model(int id) {
+        this.id = id;
+    }
+
     // Constructor for create new model
     public Model(String name, String path, float mos, int datasetId, int algorithmId, String task) {
         this.name = name;

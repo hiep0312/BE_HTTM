@@ -12,6 +12,10 @@ public class Transcript {
     public Transcript() {
     }
 
+    public Transcript(int id) {
+        this.id = id;
+    }
+
     public Transcript(int id, String name, String content, Timestamp date, Timestamp lastUpdate) {
         this.id = id;
         this.name = name;

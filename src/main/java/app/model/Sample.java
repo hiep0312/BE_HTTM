@@ -10,6 +10,10 @@ public class Sample {
     private Timestamp date;
     private Timestamp lastupdate;
 
+    public Sample(int id) {
+        this.id = id;
+    }
+
     public Sample(int id, String name, int audioId, int transcriptId, Timestamp date, Timestamp update) {
         this.id = id;
         this.name = name;
